@@ -1,0 +1,12 @@
+{
+  "name": "coraquilla-blog-backend",
+  "version": "0.0.1",
+  "scripts": {
+    "start": "node dist/main"
+  },
+  "dependencies": {
+    "@nestjs/core": "^10.0.0",
+    "@nestjs/common": "^10.0.0",
+    "reflect-metadata": "^0.2.0"
+  }
+}
