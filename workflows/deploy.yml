@@ -14,12 +14,12 @@ jobs:
       - name: Deploy to VPS
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          host: ${{ secrets.VPS_HOST }}
+          username: root
+          key: ${{ secrets.VPS_KEY }}
           script: |
-            cd ~/coraquilla-blog-backend
+            cd /opt/posts_api
             git pull origin main
             npm install
             npm run build    
-            pm2 restart nestjs-blog-backend-api            
+            pm2 restart nestjs-posts-api
