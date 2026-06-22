@@ -1,13 +1,9 @@
-- name: Deploy to VPS
+      - name: Deploy to VPS
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.VPS_HOST }}
+          # Usa secreto para el usuario (crea secret VPS_USER en GitHub)
           username: ${{ secrets.VPS_USER }}
+          # Pega la clave privada completa en el secret VPS_KEY (incluye BEGIN/END)
           key: ${{ secrets.VPS_KEY }}
           port: 22
-          # Esta línea es la clave para que no intente buscar un archivo:
-          key_path: ""
-          # Añadimos esto por si acaso el servidor requiere el tipo de llave explícito:
-          fingerprint: ""
-          script: |
-            echo 'Conexion exitosa'
