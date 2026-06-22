@@ -19,7 +19,7 @@ jobs:
           username: J1726391673
           key: ${{ secrets.VPS_KEY }}
           source: "."
-          target: "/opt/posts_api"
+          target: "/home/J1726391673/posts_api"
 
       - name: Run deploy commands on VPS
         uses: appleboy/ssh-action@v1.0.3
@@ -29,11 +29,19 @@ jobs:
           key: ${{ secrets.VPS_KEY }}
           script: |
             set -e
-            cd /opt/posts_api
+            cd /home/J1726391673/posts_api
+            
+            # Detener proceso previo si existe
             sudo lsof -t -i:3000 | xargs -r sudo kill -9 || true
+            
+            # Crear archivo de variables de entorno
             printf "%s" "${{ secrets.ENV_FILE }}" > .env
+            
+            # Instalar dependencias y construir
             npm install
             npm run build
+            
+            # Gestionar proceso con PM2
             pm2 stop nestjs-posts-api || true
             pm2 delete nestjs-posts-api || true
             pm2 start dist/main.js --name nestjs-posts-api
