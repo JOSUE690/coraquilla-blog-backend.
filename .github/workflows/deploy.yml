@@ -34,8 +34,14 @@ jobs:
             # Detener proceso previo si existe
             sudo lsof -t -i:3000 | xargs -r sudo kill -9 || true
             
-            # Crear archivo de variables de entorno
-            printf "%s" "${{ secrets.ENV_FILE }}" > .env
+            # Crear archivo de variables de entorno con validación
+            if [ -z "${{ secrets.ENV_FILE }}" ]; then
+              echo "¡ERROR! El secreto ENV_FILE está vacío."
+              exit 1
+            else
+              echo "Secreto recibido, creando .env..."
+              echo "${{ secrets.ENV_FILE }}" > .env
+            fi
             
             # Instalar dependencias y construir
             npm install
@@ -45,4 +51,4 @@ jobs:
             pm2 stop nestjs-posts-api || true
             pm2 delete nestjs-posts-api || true
             pm2 start dist/main.js --name nestjs-posts-api
-            pm2 save
+            pm2 save 
